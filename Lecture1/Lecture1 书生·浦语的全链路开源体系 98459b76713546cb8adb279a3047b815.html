@@ -1,0 +1,686 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Lecture1 书生·浦语的全链路开源体系</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="98459b76-7135-46cb-8adb-279a3047b815" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📍</span></div><h1 class="page-title">Lecture1 书生·浦语的全链路开源体系</h1><p class="page-description"></p></header><div class="page-body"><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="734e4593-9eb7-4e35-87c9-18ae58f56222"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">在20世纪40年代，康奈尔大学教授Walter Pauk开发了一种新的笔记系统，为大学生提供了一种更好的组织、浓缩和吸收知识的方法。它被证明是一种非常有效的学习工具。下面是如何在概念中使用它。</div></figure><h3 id="05e0d356-0b36-4e46-8f00-8278c8869dbd" class="">Date: <time>@January 9, 2024</time> </h3><h3 id="aeba65fb-5065-4439-98ba-68365a3a0a24" class="">Topic: </h3><figure class="block-color-red_background callout" style="white-space:pre-wrap;display:flex" id="73504dac-5fb8-47e6-acea-f7895e2b389a"><div style="font-size:1.5em"><span class="icon">📢</span></div><div style="width:100%"><strong>全链路体系</strong></div></figure><figure id="4cf8173e-458d-4063-a4d9-cd525b70cfc7" class="image"><a href="Lecture1%20%E4%B9%A6%E7%94%9F%C2%B7%E6%B5%A6%E8%AF%AD%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E5%BC%80%E6%BA%90%E4%BD%93%E7%B3%BB%2098459b76713546cb8adb279a3047b815/Untitled.png"><img style="width:3785px" src="Lecture1%20%E4%B9%A6%E7%94%9F%C2%B7%E6%B5%A6%E8%AF%AD%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E5%BC%80%E6%BA%90%E4%BD%93%E7%B3%BB%2098459b76713546cb8adb279a3047b815/Untitled.png"/></a></figure><div id="bac8254a-8280-4ae0-90bd-acdf27c97407" class="column-list"><div id="9e35be61-8fa6-4325-971f-7682e8a1c6ea" style="width:25%" class="column"><h3 id="868352dd-e028-4cd2-a637-69d84d1244e3" class="">Recall</h3><p id="393e0f21-6adf-445f-b903-1642c11b8d80" class=""><strong>引言</strong></p><p id="e732201a-2c39-44af-ae48-0b8e39ee01fa" class="">
+</p><p id="78db21c5-3b33-4966-9beb-88b32c6c0e78" class=""><strong>书生·浦语大模型是什么？</strong></p><p id="f242bb14-4cc3-42ca-b57b-417f824e14de" class="">
+</p><p id="c8c1eb5a-fbb5-4ae3-8d84-9f3eda43f1cf" class=""><strong>书生·浦语的性能</strong></p><p id="27e1ed6b-370a-4e09-ae95-c4e66d9c523b" class="">
+</p><p id="c232549f-3f42-41f9-b775-9167351143b4" class=""><mark class="highlight-blue"><strong>从模型到应用</strong></mark></p><p id="c81c2672-d832-499b-9caa-23eb3d8318bb" class=""><mark class="highlight-blue"><strong>需要的框架/工具</strong></mark></p><p id="ea5c07ae-b433-447f-883d-07f4df45ba7e" class="">
+</p><p id="92f2c8ba-cf0c-44da-8da6-ca3f5cdc18e3" class=""><strong>全链路是什么？</strong></p><p id="7e5756c3-0846-433a-bdba-8ba0eb05a794" class="">
+</p><p id="3c540f83-87e3-49c5-a540-250ffdfaf305" class=""><strong>书生万卷数据库2TB</strong></p><p id="d3c83be2-6adb-49de-81f1-a8b8a4899864" class=""><strong>OpenDatalab数据库80TB</strong></p><p id="03bc35d7-9e34-45ce-8795-88fd77397c7d" class="">
+</p><p id="ba3d0283-1b34-4a1c-9210-bb2b4360688b" class=""><strong>微调工具Xtuner</strong></p><p id="0566ac1f-0a11-4791-84da-b33485c22bfa" class="">
+</p><p id="3a2b4ca4-8c47-41a3-9574-9b88b2c62936" class=""><strong>部署工具LMDeploy</strong></p><p id="5d184c80-a996-400b-b7ee-7df636c593c4" class="">
+</p></div><div id="89327724-554c-469d-af78-042e85ba6556" style="width:75%" class="column"><h3 id="3ac78126-e5c5-4780-9c8e-f818a2e73910" class="">Notes</h3><ul id="95ddc7d1-61f4-4c17-aa65-b82b75a8609f" class="bulleted-list"><li style="list-style-type:disc">全球对于大模型关注增多。趋势是专用模型—通用模型。<br/><br/><mark class="highlight-gray">一个模型解决问题 👉 一个通用的大模型解决多个任务、多个模态（更高阶、更智能）</mark></li></ul><ul id="8427a457-05a2-48a5-ba4e-fc17f6cf5024" class="bulleted-list"><li style="list-style-type:disc">书生·浦语大模型的三个量级：<ul id="d1ccbb85-5fd2-4652-8a6c-26e61820f1a3" class="bulleted-list"><li style="list-style-type:circle">InternLM-7B（可部署）</li></ul><ul id="87717dbd-7238-4b24-a30c-407125071264" class="bulleted-list"><li style="list-style-type:circle">InternLM-20B（可定制）</li></ul><ul id="a85a0651-5517-48c2-b22b-854707e97ab4" class="bulleted-list"><li style="list-style-type:circle">InternLM-123B（能力强）</li></ul></li></ul><ul id="3bab1a5c-6ecf-4489-87ec-c84f3f4dbc76" class="bulleted-list"><li style="list-style-type:disc">相比其他大模型，以更小的参数达到了更多参数的效果</li></ul><ul id="d3592dbf-a9e5-4393-9381-5a8faab1cca3" class="bulleted-list"><li style="list-style-type:disc">大模型的应用：智能客服、个人助手、行业应用</li></ul><ul id="a15bcf40-cf29-497f-b56c-0ca21f887cd5" class="toggle"><li><details open=""><summary>模型的应用到部署</summary><figure id="1747c28d-5379-4ef3-a7de-20db49012e47" class="image"><a href="Lecture1%20%E4%B9%A6%E7%94%9F%C2%B7%E6%B5%A6%E8%AF%AD%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E5%BC%80%E6%BA%90%E4%BD%93%E7%B3%BB%2098459b76713546cb8adb279a3047b815/Untitled%201.png"><img style="width:3729px" src="Lecture1%20%E4%B9%A6%E7%94%9F%C2%B7%E6%B5%A6%E8%AF%AD%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E5%BC%80%E6%BA%90%E4%BD%93%E7%B3%BB%2098459b76713546cb8adb279a3047b815/Untitled%201.png"/></a></figure><ol type="1" id="510f846b-c929-4315-b099-aa274ec444a3" class="numbered-list" start="1"><li>模型评测：从社区中选择合适的模型（关注不同维度的能力，针对应用场景的能力）</li></ol><ol type="1" id="7dcd0840-3848-4cb0-81ff-d11469368195" class="numbered-list" start="2"><li>业务场景是否复杂</li></ol><ol type="1" id="ee0a1ed2-9af5-48f4-bc8c-36e2fbade070" class="numbered-list" start="3"><li>环境交互：调用外部API，和已有业务数据库进行交互</li></ol></details></li></ul></div></div><figure class="block-color-red_background callout" style="white-space:pre-wrap;display:flex" id="6e412c57-8d4a-4683-8e16-c6994147518a"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%"><strong>SUMMARY: </strong>介绍了书生·浦语的全链条开放体系的各个模块，包括<strong>数据、与训练、微调、部署、评测和应用</strong>，每个模块都有很好的性能，同时能和很多平台进行对接，我们能够通过使用已经集成在书生·浦语里的优化算法和相关成型算法，以此为基础进行进一步的大模型开发和研究，最终实现将模型微调、部署并投之于应用。</div></figure><p id="a2126a48-6d5f-4d96-92dd-16c8ad243997" class="">
+</p><figure class="block-color-red_background callout" style="white-space:pre-wrap;display:flex" id="fe0d4671-0db6-46ae-8c3d-48ba09ee806c"><div style="font-size:1.5em"><span class="icon">❓</span></div><div style="width:100%"><strong>一些其他问题</strong></div></figure><p id="8d5d16de-2269-41af-9291-0d5b07bc28ef" class=""><mark class="highlight-brown_background">Xtuner是什么？</mark></p><p id="65fcd91c-7287-4cdc-9ad1-ec825a576933" class="">是一个微调框架，能够进行全参数的微调和LoRA低成本微调.</p><p id="dcf30591-ed87-4526-93a6-8f41cf73a868" class="">能够在8GB的显存下进行7B的模型的微调</p><figure id="293496cb-708d-485d-84bc-9ffd5f956f23" class="image"><a href="Lecture1%20%E4%B9%A6%E7%94%9F%C2%B7%E6%B5%A6%E8%AF%AD%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E5%BC%80%E6%BA%90%E4%BD%93%E7%B3%BB%2098459b76713546cb8adb279a3047b815/Untitled%202.png"><img style="width:3511px" src="Lecture1%20%E4%B9%A6%E7%94%9F%C2%B7%E6%B5%A6%E8%AF%AD%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E5%BC%80%E6%BA%90%E4%BD%93%E7%B3%BB%2098459b76713546cb8adb279a3047b815/Untitled%202.png"/></a></figure><p id="fa558a35-5175-4a12-9fa5-93952620b248" class=""><mark class="highlight-brown_background">OpenCompass是什么？</mark></p><p id="151a7184-b589-4854-991f-246e359861ab" class="">是评测的工具，可以给一个模型的各个方面评分</p><p id="30c0e951-92ec-456f-bd1e-d6b5eebaf85e" class=""><mark class="highlight-brown_background">什么是智能体？</mark></p><p id="54acdf80-0cb6-4228-89a5-9a08036fa90a" class="">可以以大模型为基础，进行一些推理和执行策略（网络的搜索、pythonExecutor）</p><p id="ea2a5816-7124-4656-a853-020eaeeceb50" class="">提供了轻量级智能体框架<code>Lagent</code></p><p id="c5b101ff-8503-4be5-8bc2-bb6d36566459" class="">多模态智能体工具箱<code>AgentLego</code>，给大模型提供更多的工具集合</p><figure id="bf3a4afc-1ba9-4c6f-a958-547c94b0e258" class="image"><a href="Lecture1%20%E4%B9%A6%E7%94%9F%C2%B7%E6%B5%A6%E8%AF%AD%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E5%BC%80%E6%BA%90%E4%BD%93%E7%B3%BB%2098459b76713546cb8adb279a3047b815/Untitled%203.png"><img style="width:1831px" src="Lecture1%20%E4%B9%A6%E7%94%9F%C2%B7%E6%B5%A6%E8%AF%AD%E7%9A%84%E5%85%A8%E9%93%BE%E8%B7%AF%E5%BC%80%E6%BA%90%E4%BD%93%E7%B3%BB%2098459b76713546cb8adb279a3047b815/Untitled%203.png"/></a></figure><p id="172e78d1-7ddc-42b6-8853-acebb6a9ce12" class="block-color-brown_background">为什么要微调？</p><p id="dab10ad5-293d-48a9-98c8-b99ecf73fd6d" class="">微调大模型可以使其更好地适应特定任务，提高性能，并且可以在小样本情况下利用预训练模型的知识。</p><p id="ed74b70b-a44f-455b-b385-a8328914840d" class="block-color-brown_background">HuggingFace是什么？</p><p id="51a9b190-88fa-48e7-9794-ac5aa9383c11" class="">HuggingFace也是一个开源的自然语言处理（NLP）模型库和平台，为开发者提供了一系列用于构建、训练和部署NLP模型的工具和资源。它的目标是使NLP模型的开发变得更加简单、高效和可复用。HuggingFace还维护了一个名为&quot;Transformers&quot;的开源社区，该社区汇集了全球的研究人员和开发者，共同贡献和分享NLP模型、工具和资源。</p><hr id="5390803f-d29f-458f-a857-ec9ca4a0db81"/><p id="3b0521b5-a241-4a1f-a758-6fa6ae53eb83" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
